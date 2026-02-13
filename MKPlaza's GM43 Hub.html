@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MKPlaza's G4M35!</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --kirby-pink: #ffadd6;
+            --kirby-deep: #ff7eb6;
+            --dream-blue: #8be9fd;
+            --star-yellow: #f1fa8c;
+            --glass-bg: rgba(255, 255, 255, 0.25);
+            --glass-border: rgba(255, 255, 255, 0.6);
+            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: #2d2d5a;
+            cursor: auto;
+        }
+
+        #page-bg {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -10;
+        }
+
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 2px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+            border-radius: 12px;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .main-header-logo {
+            height: 50px;
+            width: auto;
+            filter: drop-shadow(4px 4px 0px var(--kirby-deep)) drop-shadow(8px 8px 0px rgba(189, 147, 249, 0.3));
+        }
+
+        .glass-panel::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.5s ease;
+            will-change: opacity;
+        }
+
+        .glass-panel.nintendo-bg::before {
+            background-image: url('https://cdn.jsdelivr.net/gh/samtheskeleton/random-things@main/wp5992309.jpg');
+            opacity: 0.9;
+        }
+
+        .glass-panel.sega-bg::before {
+            background-image: url('https://cdn.jsdelivr.net/gh/samtheskeleton/random-things@main/video-games-digital-art-retrowave-retro-games-sega-genesis-hd-wallpaper-preview.jpg');
+            opacity: 0.9;
+        }
+
+        .glass-panel.playstation-bg::before {
+            background-image: url('https://cdn.jsdelivr.net/gh/samtheskeleton/random-things@main/botones-de-playstation-8920.jpg');
+            opacity: 0.9;
+        }
+
+        .glass-panel.pc-bg::before {
+            background-image: url('https://cdn.jsdelivr.net/gh/samtheskeleton/random-things@main/view-illuminated-neon-gaming-keyboard-setup-controller_23-2149529367.avif');
+            opacity: 0.9;
+        }
+
+        .glass-panel.misc-bg::before {
+            background-image: url('https://cdn.jsdelivr.net/gh/samtheskeleton/random-things@main/images%20(3).jpeg');
+            opacity: 0.9;
+        }
+
+        #category-title {
+            color: white;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+            transition: color 0.5s ease, text-shadow 0.5s ease;
+            position: relative;
+            z-index: 2;
+            font-size: 2.25rem;
+        }
+
+        .nintendo-title-logo {
+            height: 30px;
+            width: auto;
+            transform: translateY(-5px);
+            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.8));
+        }
+
+        .playstation-title-logo {
+            height: 30px;
+            width: auto;
+            transform: translateY(-5px);
+            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.8));
+        }
+
+        .sega-title-logo {
+            height: 30px;
+            width: auto;
+            transform: translateY(-5px);
+            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.8));
+        }
+
+        .pc-title-logo {
+            height: 30px;
+            width: auto;
+            transform: translateY(-5px);
+            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.8));
+        }
+
+        .misc-title-logo {
+            height: 30px;
+            width: auto;
+            transform: translateY(-5px);
+            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.8));
+        }
+
+        .misc-nav-icon,
+        .pc-nav-icon,
+        .playstation-nav-icon {
+            width: 28px;
+            height: 28px;
+            filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.5));
+        }
+
+        .nintendo-bg #category-title {
+            color: #E60012;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.7),
+                -1px -1px 2px rgba(255, 255, 255, 0.7);
+        }
+
+        .sega-bg #category-title {
+            color: #0089CF;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.7),
+                -1px -1px 2px rgba(255, 255, 255, 0.7);
+        }
+
+        .nav-btn {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 64px;
+            height: 64px;
+            padding: 0;
+            background: transparent;
+            border: 2px solid transparent;
+            border-radius: 50%;
+            font-weight: 700;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            backdrop-filter: blur(0);
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .nav-btn.active {
+            background: rgba(255, 255, 255, 0.3);
+            color: var(--kirby-deep);
+            box-shadow: 0 0 15px rgba(255, 173, 214, 0.5), inset 0 0 8px rgba(255, 255, 255, 0.6);
+            border-color: var(--glass-border);
+        }
+
+        .nav-btn svg {
+            width: 28px;
+            height: 28px;
+            fill: currentColor;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-btn:hover svg {
+            transform: rotate(-15deg) scale(1.1);
+        }
+
+        .nav-btn img {
+            width: 140%;
+            height: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-btn:hover img {
+            transform: scale(1.1);
+        }
+
+        .holo-card {
+            position: relative;
+            height: 150px;
+            border-radius: 24px;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            cursor: pointer;
+            overflow: hidden;
+
+            opacity: 0;
+            transform: translateY(40px) scale(0.95);
+            transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
+                opacity 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
+                box-shadow 0.3s ease,
+                border-color 0.3s ease;
+        }
+
+        .holo-card.loaded {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .holo-card.loaded:hover {
+            transform: translateY(-10px) scale(1.05);
+        }
+
+        .holo-card:hover {
+            box-shadow: 0 20px 40px -10px rgba(255, 126, 182, 0.3);
+            border-color: white;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .holo-card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: translateZ(0);
+        }
+
+        .warp-star-loader {
+            width: 64px;
+            height: 64px;
+            animation: warpSpin 1.2s linear infinite;
+        }
+
+        .warp-star-loader img {
+            width: 100%;
+            height: 100%;
+        }
+
+        @keyframes warpSpin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        #content-grid {
+            transition: opacity 0.3s ease-in-out;
+        }
+    </style>
+</head>
+
+<body class="p-4 md:p-8">
+
+    <img id="page-bg" src="https://cdn.jsdelivr.net/gh/samtheskeleton/random-things@main/wp1978954.jpg" alt="Dreamy sky background">
+
+    <main class="max-w-6xl mx-auto relative z-10">
+        <header class="text-center mb-12 mt-8 animate-[fadeIn_1s_ease-out]">
+            <img src="" alt="" class="main-header-logo mx-auto">
+        </header>
+
+        <nav class="flex flex-wrap justify-center gap-3 md:gap-5 mb-12">
+            <button class="nav-btn active" data-category="nintendo" title="Nintendo">
+                <img src="https://cdn.jsdelivr.net/gh/samtheskeleton/random-things@main/Nintendo-Japan-Thumb-01-removebg-preview-modified.png" alt="Nintendo">
+            </button>
+            <button class="nav-btn" data-category="sega" title="Sega">
+                <img src="https://cdn.jsdelivr.net/gh/samtheskeleton/random-things@main/images-modified.png" alt="Sega">
+            </button>
+            <button class="nav-btn" data-category="playstation" title="PlayStation">
+                <img src="https://cdn.jsdelivr.net/gh/samtheskeleton/random-things@main/images%20(2)-modified.png" alt="PlayStation">
+            </button>
+            <button class="nav-btn" data-category="pc" title="PC">
+                <img src="https://cdn.jsdelivr.net/gh/samtheskeleton/random-things@main/images-removebg-preview-modified.png" alt="PC">
+            </button>
+            <button class="nav-btn" data-category="misc" title="Misc">
+                <img src="https://cdn.jsdelivr.net/gh/samtheskeleton/random-things@main/Icon-round-Question_mark.svg.png" alt="Misc" class="misc-nav-icon">
+            </button>
+        </nav>
+
+        <section id="main-panel" class="glass-panel p-6 md:p-10 min-h-[600px] transition-all duration-500 nintendo-bg">
+
+            <div class="flex flex-col md:flex-row justify-between items-center mb-8 pb-0">
+                <h2 id="category-title" class="text-3xl font-extrabold tracking-tight">
+                    Nintendo Collections
+                </h2>
+            </div>
+
+            <div id="content-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 relative">
+                <div id="loader" class="absolute inset-0 flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300">
+                    <div class="warp-star-loader">
+                        <img src="https://cdn.jsdelivr.net/gh/samtheskeleton/random-things@main/d5lu8re-8a536d2c-dd1c-4afd-bdbd-2ee934662111.png" alt="Loading...">
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const gameData = {
+            nintendo: [{
+                    title: "Pokémon Collection",
+                    url: "https://sites.google.com/view/fus3-bomb/gm43s/pokemon",
+                    img: "https://cdn.jsdelivr.net/gh/samtheskeleton/random-things@main/pokemonbig.webp"
+                },
+                {
+                    title: "Nintendo Console Collection",
+                    url: "https://sites.google.com/view/fus3-bomb/gm43s/nintendo-consoles",
+                    img: "https://placehold.co/400x200/e60012/ffffff?text=Nintendo+Consoles"
+                },
+                {
+                    title: "Kirby Collection",
+                    url: "https://sites.google.com/view/fus3-bomb/gm43s/kirby",
+                    img: "https://cdn.jsdelivr.net/gh/samtheskeleton/random-things@main/w6GAu2vuvLoE3NpyxHwRBA-1200-80.jpeg"
+                },
+                {
+                    title: "Mario Collection",
+                    url: "https://sites.google.com/view/fus3-bomb/gm43s/mario",
+                    img: "https://cdn.jsdelivr.net/gh/samtheskeleton/random-things@main/images%20(1).jpeg"
+                },
+                {
+                    title: "Legend of Zelda Collection",
+                    url: "https://sites.google.com/view/fus3-bomb/gm43s/the-legend-of-zelda",
+                    img: "https://cdn.jsdelivr.net/gh/samtheskeleton/random-things@main/2x1_Hub_TheLegendOfZelda_ToTK_image1600w.jpg"
+                },
+                {
+                    title: "Donkey Kong Collection",
+                    url: "https://sites.google.com/view/fus3-bomb/gm43s/donkey-kong",
+                    img: "https://cdn.jsdelivr.net/gh/samtheskeleton/random-things@main/Vs2lxc.jpg"
+                },
+                {
+                    title: "Dragon Ball Collection",
+                    url: "https://sites.google.com/view/fus3-bomb/gm43s/dragon-ball",
+                    img: "https://placehold.co/400x200/ffadd6/2d2d5a?text=Dragon+Ball"
+                },
+                {
+                    title: "Lego Collection",
+                    url: "https://sites.google.com/view/fus3-bomb/gm43s/lego",
+                    img: "https://placehold.co/400x200/ffadd6/2d2d5a?text=Lego"
+                }
+            ],
+            sega: [{
+                    title: "Sonic Collection",
+                    url: "https://sites.google.com/view/fus3-bomb/gm43s/sonic",
+                    img: "https://cdn.jsdelivr.net/gh/samtheskeleton/random-things@main/29c0d635f838375ef8b4b23bac336286.jpeg"
+                },
+                {
+                    title: "MegaMan Collection",
+                    url: "https://sites.google.com/view/fus3-bomb/gm43s/mega-man",
+                    img: "https://placehold.co/400x200/004085/8be9fd?text=Mega+Man"
+                },
+                {
+                    title: "StreetFighter Collection",
+                    url: "https://sites.google.com/view/fus3-bomb/gm43s/street-fighter",
+                    img: "https://placehold.co/400x200/8be9fd/2d2d5a?text=StreetFighter"
+                }
+            ],
+            playstation: [{
+                    title: "PS1",
+                    url: "https://sites.google.com/view/fus3-bomb/gm43s/ps1",
+                    img: "https://cdn.jsdelivr.net/gh/samtheskeleton/random-things@main/playstation-logo-13312.jpg"
+                },
+                {
+                    title: "Crash Bandicoot Collection",
+                    url: "https://sites.google.com/view/fus3-bomb/gm43s/crash-bandicoot",
+                    img: "https://placehold.co/400x200/ff7eb6/f1fa8c?text=Crash"
+                },
+                {
+                    title: "GTA Collection",
+                    url: "https://sites.google.com/view/fus3-bomb/gm43s/gta",
+                    img: "https://placehold.co/400x200/ff7eb6/f1fa8c?text=GTA"
+                },
+                {
+                    title: "DOOM Collection",
+                    url: "https://sites.google.com/view/fus3-bomb/gm43s/doom",
+                    img: "https://placehold.co/400x200/000000/ff7eb6?text=DOOM"
+                }
+            ],
+            pc: [{
+                    title: "Minecraft Collection",
+                    url: "https://sites.google.com/view/fus3-bomb/gm43s/minecraft",
+                    img: "https://placehold.co/400x200/a1c4fd/2d2d5a?text=Minecraft"
+                },
+                {
+                    title: "FNF Collection",
+                    url: "https://sites.google.com/view/fus3-bomb/gm43s/fnf",
+                    img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8XwICL3A6r63AaZJ-vdaxFg9zd46zelXUHw&s"
+                },
+                {
+                    title: "FNAF Collection",
+                    url: "https://sites.google.com/view/fus3-bomb/gm43s/fnaf",
+                    img: "https://placehold.co/400x200/a1c4fd/2d2d5a?text=FNAF"
+                },
+            ],
+            misc: [{
+                    title: "Google Play Collection",
+                    url: "https://sites.google.com/view/fus3-bomb/gm43s/mobile-g4m3s-v1",
+                    img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGeOvCECUmfsd_FCVU_jqJ6gm5yjXfbuh0ZQ&s"
+                },
+                {
+                    title: "Random Sport Series Collection",
+                    url: "https://sites.google.com/view/fus3-bomb/gm43s/random-sports-series",
+                    img: "https://placehold.co/400x200/f1fa8c/2d2d5a?text=Sports"
+                },
+                {
+                    title: "Mortal Kombat Collection",
+                    url: "https://sites.google.com/view/fus3-bomb/gm43s/mortal-kombat",
+                    img: "https://placehold.co/400x200/f1fa8c/2d2d5a?text=Mortal+Kombat"
+                },
+                {
+                    title: "Misc Games Collection",
+                    url: "https://sites.google.com/view/fus3-bomb/gm43s/other-gm3s",
+                    img: "https://placehold.co/400x200/f1fa8c/2d2d5a?text=Misc"
+                },
+                {
+                    title: "Indie Games",
+                    url: "https://sites.google.com/view/fus3-bomb/gm43s/indie-fan-made",
+                    img: "https://placehold.co/400x200/f1fa8c/2d2d5a?text=Indie"
+                }
+            ],
+            playstationLogo: "https://cdn.jsdelivr.net/gh/samtheskeleton/random-things@main/PlayStation-Collections-11-16-2025.png",
+            segaLogo: "https://cdn.jsdelivr.net/gh/samtheskeleton/random-things@main/335beeef804dedbb6313a2e67c638b70.png",
+            pcLogoTitle: "https://cdn.jsdelivr.net/gh/samtheskeleton/random-things@main/29d795149d1338f14b673938846f553c.png",
+            miscLogoTitle: "https://cdn.jsdelivr.net/gh/samtheskeleton/random-things@main/293a1c924587691e548c06ba2690944e.png"
+        };
+
+        const grid = document.getElementById('content-grid');
+        const loader = document.getElementById('loader');
+        const categoryTitle = document.getElementById('category-title');
+        const mainPanel = document.getElementById('main-panel');
+
+        function renderContent(category) {
+            grid.style.opacity = 0;
+            loader.style.opacity = 1;
+
+            mainPanel.classList.toggle('nintendo-bg', category === 'nintendo');
+            mainPanel.classList.toggle('sega-bg', category === 'sega');
+            mainPanel.classList.toggle('playstation-bg', category === 'playstation');
+            mainPanel.classList.toggle('pc-bg', category === 'pc');
+            mainPanel.classList.toggle('misc-bg', category === 'misc');
+
+            setTimeout(() => {
+                let data = [...(gameData[category] || [])];
+
+                grid.innerHTML = '';
+                grid.appendChild(loader);
+
+                if (data.length === 0) {
+                    grid.innerHTML += `<div class="col-span-full text-center text-white opacity-80 text-xl py-20 font-bold">No games found in this dream...</div>`;
+                } else {
+                    data.forEach((game, index) => {
+                        const card = document.createElement('a');
+                        card.href = game.url;
+                        card.className = 'holo-card';
+
+                        card.innerHTML = `
+                            <img src="${game.img}" alt="${game.title}" class="holo-card-image" onerror="this.src='https://placehold.co/200x100/ffadd6/2d2d5a?text=Error'">
+                        `;
+                        grid.appendChild(card);
+
+                        setTimeout(() => {
+                            card.classList.add('loaded');
+                        }, index * 80);
+                    });
+                }
+                loader.style.opacity = 0;
+                grid.style.opacity = 1;
+
+                let titleContent = '';
+                if (category === 'nintendo') {
+                    titleContent = `<img src="https://cdn.jsdelivr.net/gh/samtheskeleton/random-things@main/8a4579efaa21378d362cb7c552f39159.png" alt="Nintendo Collections" class="nintendo-title-logo">`;
+                } else if (category === 'playstation') {
+                    titleContent = `<img src="${gameData.playstationLogo}" alt="PlayStation Collections" class="playstation-title-logo">`;
+                } else if (category === 'sega') {
+                    titleContent = `<img src="${gameData.segaLogo}" alt="Sega Collections" class="sega-title-logo">`;
+                } else if (category === 'pc') {
+                    titleContent = `<img src="${gameData.pcLogoTitle}" alt="PC Collections" class="pc-title-logo">`;
+                } else if (category === 'misc') {
+                    titleContent = `<img src="${gameData.miscLogoTitle}" alt="Miscellaneous Collections" class="misc-title-logo">`;
+                } else {
+                    let titleText = category.charAt(0).toUpperCase() + category.slice(1);
+                    titleText += (category === 'misc' ? '' : ' Collections');
+                    titleContent = titleText;
+                }
+
+                categoryTitle.innerHTML = titleContent;
+
+            }, 350);
+        }
+
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                renderContent(btn.dataset.category);
+            });
+        });
+
+        renderContent('nintendo');
+    </script>
+</body>
+
+</html>
