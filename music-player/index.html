@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MK-Plaza Music Player</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.4.0/color-thief.min.js"></script>
+</head>
+<body>
+    <div class="search-container">
+        <input type="text" class="search-input" placeholder="Search for any song idk know man..." id="searchInput" autocomplete="off" aria-label="Search for songs" />
+        <div class="search-results" id="searchResults" role="listbox" aria-label="Search results"></div>
+    </div>
+
+    <div class="player">
+        <div class="album-art" id="album">
+            <img src="https://music-player-eight-omega.vercel.app/empty-art.png" alt="Album artwork" id="albumCover" crossorigin="anonymous" />
+        </div>
+        
+        <div class="info" id="playerInfo">
+            <div class="track-title" id="trackTitle">Not Playing</div>
+            <div class="artist" id="artistName">Select a song to start</div>
+            
+            <div class="controls">
+                <i id="loopToggle" class="fa-solid fa-repeat control-btn" title="Toggle loop"></i>
+                <i class="fas fa-backward control-btn" id="backward10" title="Rewind 10s"></i>
+                <i class="fa-solid fa-chevron-left control-btn" id="backward5" title="Rewind 5s"></i>
+                <i id="playPause" class="fa-solid fa-play control-btn primary" title="Play/Pause"></i>
+                <i class="fa-solid fa-chevron-right control-btn" id="forward5" title="Forward 5s"></i>
+                <i class="fas fa-forward control-btn" id="forward10" title="Forward 10s"></i>
+            </div>
+            
+            <div id="seekbar" class="seekbar" role="slider" tabindex="0">
+                <div id="progress"></div>
+            </div>
+            
+            <div class="timecodes">
+                <span id="currentTime">0:00</span>
+                <span id="remainingTime">-0:00</span>
+            </div>
+        </div>
+
+        <div class="lyrics-info" id="lyricsInfo">
+            <div class="lyrics-content" id="lyricsContent">No lyrics available.</div>
+        </div>
+    </div>
+
+    <div class="bottom-controls">
+        <div id="volumeBtn" class="bottom-btn"><i class="fa-solid fa-volume-high"></i><span>Volume</span></div>
+        <div class="bottom-btn" id="lyricsToggle"><i class="fa-solid fa-align-left"></i><span>Lyrics</span></div>
+    </div>
+
+    <div id="ytPlayerContainer"><div id="ytPlayer"></div></div>
+    <div id="notification" class="notification"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
