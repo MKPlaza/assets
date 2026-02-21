@@ -1,10 +1,15 @@
-const CONFIG = {
+
+
+
+        // Configuration
+        const CONFIG = {
             YT_KEY: "AIzaSyAf62uxazE_nFYZhq1St7jPjSL9l7-mzV8",
             LYRIC_EP: "https://lrclib.net/api/get",
             SEARCH_EP: "https://itunes.apple.com/search?term=",
             BASE_URL: "https://music-player-eight-omega.vercel.app"
         };
 
+        // DOM Elements
         const elements = {
             searchInput: document.getElementById("searchInput"),
             searchResults: document.getElementById("searchResults"),
@@ -26,6 +31,7 @@ const CONFIG = {
             notification: document.getElementById("notification")
         };
 
+        // State
         let state = {
             player: null,
             isPlaying: false,
@@ -42,11 +48,13 @@ const CONFIG = {
             }
         };
 
+        // Color management
         const colorThief = new ColorThief();
         let currentColor = { r: 115, g: 98, b: 86 };
         let targetColor = { r: 115, g: 98, b: 86 };
         let animationId = null;
 
+        // Utility Functions
         function showNotification(message, type = 'info') {
             elements.notification.textContent = message;
             elements.notification.className = `notification show ${type}`;
@@ -184,6 +192,7 @@ const CONFIG = {
             showNotification("Playback error occurred", "error");
         }
 
+        // Search Functionality
         const debouncedSearch = debounce((query) => {
             if (query.length > 1) {
                 searchSongs(query);
@@ -206,6 +215,7 @@ const CONFIG = {
                 }
             });
 
+            // Hide results when clicking outside
             document.addEventListener("click", (e) => {
                 if (!elements.searchResults.contains(e.target) && e.target !== elements.searchInput) {
                     hideSearchResults();
@@ -291,11 +301,14 @@ const CONFIG = {
             elements.searchResults.classList.remove("active");
         }
 
+        // Music Playback
         async function playSong(title, artist, artwork) {
             try {
+                // Update UI immediately
                 elements.trackTitle.textContent = title;
                 elements.artistName.textContent = artist;
 
+                // Update artwork
                 const highResArtwork = artwork ? artwork.replace("100x100", "600x600") : `${CONFIG.BASE_URL}/empty-art.png`;
                 
                 elements.albumCover.crossOrigin = "anonymous";
@@ -331,6 +344,7 @@ const CONFIG = {
 
         async function searchAndPlayYouTube(query) {
             try {
+                // Use a proxy or direct API call
                 const searchUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(query)}&type=video&key=${CONFIG.YT_KEY}&maxResults=1`;
                 
                 const response = await fetch(searchUrl);
@@ -361,6 +375,7 @@ const CONFIG = {
             }
         }
 
+        // Lyrics Functionality
         async function fetchLyrics(artist, title) {
             try {
                 elements.lyricsContent.textContent = "Loading lyrics...";
@@ -442,6 +457,7 @@ const CONFIG = {
             }, 500);
         }
 
+        // Control Functions
         function togglePlayback() {
             if (!state.player) return;
 
@@ -506,6 +522,7 @@ const CONFIG = {
             state.player.seekTo(newTime, true);
         }
 
+        // Seek Bar Functions
         function setupSeekBar() {
             elements.seekBar.addEventListener("mousedown", startSeek);
             elements.seekBar.addEventListener("keydown", (e) => {
@@ -569,21 +586,26 @@ const CONFIG = {
             setInterval(updateProgress, 500);
         }
 
+        // Event Listeners Setup
         function setupEventListeners() {
+            // Playback controls
             elements.playPauseBtn.addEventListener("click", togglePlayback);
             elements.volumeBtn.addEventListener("click", toggleMute);
             elements.loopToggle.addEventListener("click", toggleLoop);
             elements.lyricsToggle.addEventListener("click", toggleLyrics);
 
+            // Skip controls
             document.getElementById("backward10").addEventListener("click", () => skipTime(-10));
             document.getElementById("backward5").addEventListener("click", () => skipTime(-5));
             document.getElementById("forward5").addEventListener("click", () => skipTime(5));
             document.getElementById("forward10").addEventListener("click", () => skipTime(10));
 
+            // Keyboard shortcuts
             document.addEventListener("keydown", handleKeyboardShortcuts);
         }
 
         function handleKeyboardShortcuts(e) {
+            // Don't trigger shortcuts when typing in search
             if (e.target === elements.searchInput) return;
 
             switch (e.code) {
@@ -609,15 +631,20 @@ const CONFIG = {
             }
         }
 
+        // Initialize Application
         function init() {
             console.log("Initializing Enhanced Music Player...");
             
+            // Load YouTube API
             loadYouTubeAPI();
             
+            // Setup search
             setupSearchListeners();
             
+            // Setup seek bar
             setupSeekBar();
             
+            // Initial color setup
             if (elements.albumCover.complete) {
                 try {
                     const dominantColor = colorThief.getColor(elements.albumCover);
@@ -630,8 +657,10 @@ const CONFIG = {
             console.log("Enhanced Music Player initialized!");
         }
 
+        // Start the application
         document.addEventListener("DOMContentLoaded", init);
 
+        // Service Worker for offline functionality (optional)
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/sw.js')
@@ -639,3 +668,4 @@ const CONFIG = {
                     .catch(error => console.log('SW registration failed'));
             });
         }
+    
