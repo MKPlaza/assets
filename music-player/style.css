@@ -1,14 +1,14 @@
-:root {
-            --bg-start: #0a1128;
-            --bg-end: #1c2541;
+
+        :root {
+            --bg-start: #747474;
+            --bg-end: #4b4b4b;
             --card-width: 580px;
             --card-height: 240px;
             --primary-text: #ffffff;
-            --secondary-text: rgba(189, 197, 209, 0.7);
-            --glass-bg: #0a1128;
+            --secondary-text: rgba(255, 255, 255, 0.7);
+            --glass-bg: rgba(0, 0, 0, 0.2);
             --glass-border: rgba(255, 255, 255, 0.1);
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            --accent-glow: #ffcc00;
         }
 
         * {
@@ -31,6 +31,7 @@
             overflow-x: hidden;
         }
 
+        /* Search Container */
         .search-container {
             width: 100%;
             max-width: var(--card-width);
@@ -47,7 +48,7 @@
             font-family: "Inter", sans-serif;
             font-size: 16px;
             background: var(--glass-bg);
-            color: #000000;
+            color: var(--primary-text);
             outline: none;
             transition: var(--transition);
             backdrop-filter: blur(10px);
@@ -60,11 +61,12 @@
 
         .search-input:focus {
             background: rgba(255, 255, 255, 0.15);
-            border-color: var(--accent-glow);
+            border-color: var(--glass-border);
             box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
             transform: translateY(-2px);
         }
 
+        /* Search Results */
         .search-results {
             width: 100%;
             max-width: var(--card-width);
@@ -154,10 +156,11 @@
             text-overflow: ellipsis;
         }
 
+        /* Loading State */
         .loading {
             text-align: center;
             padding: 60px 20px;
-            color: var(--accent-glow);
+            color: var(--secondary-text);
             font-size: 14px;
         }
 
@@ -166,7 +169,7 @@
             display: inline-block;
             width: 20px;
             height: 20px;
-            border: 2px solid var(--accent-glow);
+            border: 2px solid var(--secondary-text);
             border-radius: 50%;
             border-top-color: transparent;
             animation: spin 1s linear infinite;
@@ -178,6 +181,7 @@
             to { transform: rotate(360deg); }
         }
 
+        /* Player */
         .player {
             width: 100%;
             max-width: var(--card-width);
@@ -186,7 +190,7 @@
             gap: 32px;
             padding: 32px;
             background: var(--glass-bg);
-            border-radius: 6px;
+            border-radius: 20px;
             backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border);
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
@@ -209,7 +213,6 @@
 
         .album-art:hover {
             transform: scale(1.02);
-            border-color: var(--accent-glow);
         }
 
         .album-art img {
@@ -218,6 +221,7 @@
             object-fit: cover;
         }
 
+        /* Player Info */
         .info {
             flex: 1;
             display: flex;
@@ -245,13 +249,13 @@
             text-overflow: ellipsis;
         }
 
+        /* Controls */
         .controls {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 6px;
             margin-bottom: 24px;
-            color: #e0e0e0;
         }
 
         .control-btn {
@@ -265,11 +269,10 @@
             justify-content: center;
             width: 48px;
             height: 48px;
-            background: (0,10,154);
         }
 
         .control-btn:hover {
-            background: (0,10,154);
+            background: rgba(255, 255, 255, 0.1);
             transform: scale(1.1);
         }
 
@@ -278,19 +281,19 @@
         }
 
         .control-btn.primary {
-            background: (0,10,154)
+            background: rgba(255, 255, 255, 0.2);
             font-size: 28px;
         }
 
         .control-btn.primary:hover {
-            background: var(--accent-glow);
+            background: rgba(255, 255, 255, 0.3);
         }
 
         .control-btn.active {
-            color: var(--accent-glow);
-            text-shadow: 0 0 8px var(--accent-glow);
+            color: #4ade80;
         }
 
+        /* Seek Bar */
         .seekbar {
             height: 6px;
             background: rgba(255, 255, 255, 0.2);
@@ -338,6 +341,7 @@
             opacity: 1;
         }
 
+        /* Time Codes */
         .timecodes {
             display: flex;
             justify-content: space-between;
@@ -346,7 +350,7 @@
             font-weight: 500;
         }
 
-
+        /* Lyrics */
         .lyrics-info {
             flex: 1;
             display: none;
@@ -410,7 +414,7 @@
             filter: blur(0.6px);
         }
 
-        
+        /* Bottom Controls */
         .bottom-controls {
             display: flex;
             gap: 16px;
@@ -422,7 +426,7 @@
             width: 140px;
             height: 48px;
             background: var(--glass-bg);
-            border-radius: 4px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -443,6 +447,7 @@
             transform: translateY(0);
         }
 
+        /* Hidden YouTube Player */
         #ytPlayer {
             position: absolute;
             top: -9999px;
@@ -452,6 +457,7 @@
             opacity: 0;
         }
 
+        /* Responsive Design */
         @media (max-width: 768px) {
             :root {
                 --card-width: 90vw;
@@ -522,6 +528,7 @@
             }
         }
 
+        /* Accessibility */
         @media (prefers-reduced-motion: reduce) {
             * {
                 animation-duration: 0.01ms !important;
@@ -530,6 +537,7 @@
             }
         }
 
+        /* Focus styles for accessibility */
         .control-btn:focus,
         .bottom-btn:focus,
         .search-input:focus {
@@ -542,6 +550,7 @@
             outline-offset: -2px;
         }
 
+        /* Error states */
         .error {
             color: #ef4444;
             text-align: center;
@@ -549,10 +558,12 @@
             font-size: 14px;
         }
 
+        /* Success states */
         .success {
             color: #4ade80;
         }
 
+        /* Notification */
         .notification {
             position: fixed;
             top: 20px;
@@ -570,3 +581,4 @@
         .notification.show {
             transform: translateX(0);
         }
+    
