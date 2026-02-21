@@ -1,74 +1,572 @@
 :root {
-    --bg-start: #0a1128;
-    --bg-end: #1c2541;
-    --card-width: 580px;
-    --card-height: 240px;
-    --primary-text: #ffffff;
-    --secondary-text: rgba(189, 197, 209, 0.7);
-    --glass-bg: #0a1128;
-    --glass-border: rgba(255, 255, 255, 0.1);
-    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --accent-glow: #ffcc00;
-}
+            --bg-start: #0a1128;
+            --bg-end: #1c2541;
+            --card-width: 580px;
+            --card-height: 240px;
+            --primary-text: #ffffff;
+            --secondary-text: rgba(189, 197, 209, 0.7);
+            --glass-bg: #0a1128;
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --accent-glow: #ffcc00;
+        }
 
-body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background: transparent !important;
-    font-family: "Inter", sans-serif;
-    color: var(--primary-text);
-    padding: 20px;
-    transition: background 0.8s ease;
-    overflow-x: hidden;
-}
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-.search-container { width: 100%; max-width: var(--card-width); margin-bottom: 20px; position: relative; z-index: 100; }
-.search-input {
-    width: 100%; padding: 16px 24px; border-radius: 16px; border: 2px solid transparent;
-    background: var(--glass-bg); color: var(--primary-text); outline: none;
-    transition: var(--transition); backdrop-filter: blur(10px);
-}
-.search-input:focus { border-color: var(--accent-glow); background: rgba(255, 255, 255, 0.15); }
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: transparent !important;
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            color: var(--primary-text);
+            padding: 20px;
+            transition: background 0.8s ease;
+            overflow-x: hidden;
+        }
 
-.search-results {
-    width: 100%; background: rgba(20, 20, 20, 0.8); backdrop-filter: blur(20px);
-    border-radius: 16px; border: 1px solid var(--glass-border);
-    position: absolute; top: 100%; left: 0; opacity: 0; visibility: hidden;
-    transform: translateY(-10px); transition: var(--transition); z-index: 99;
-}
-.search-results.active { opacity: 1; visibility: visible; transform: translateY(0); }
+        .search-container {
+            width: 100%;
+            max-width: var(--card-width);
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 100;
+        }
 
-.player {
-    width: 100%; max-width: var(--card-width); display: flex; align-items: center;
-    gap: 32px; padding: 32px; background: var(--glass-bg); border-radius: 6px;
-    backdrop-filter: blur(20px); border: 1px solid var(--glass-border);
-}
+        .search-input {
+            width: 100%;
+            padding: 16px 24px;
+            border-radius: 16px;
+            border: 2px solid transparent;
+            font-family: "Inter", sans-serif;
+            font-size: 16px;
+            background: var(--glass-bg);
+            color: #000000;
+            outline: none;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
 
-.album-art { flex: 0 0 var(--card-height); height: var(--card-height); border-radius: 16px; overflow: hidden; }
-.album-art img { width: 100%; height: 100%; object-fit: cover; }
+        .search-input::placeholder {
+            color: var(--secondary-text);
+        }
 
-.controls { display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 24px; }
-.control-btn { font-size: 24px; cursor: pointer; transition: var(--transition); padding: 8px; }
-.control-btn.primary { font-size: 28px; }
-.control-btn.active { color: var(--accent-glow); }
+        .search-input:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--accent-glow);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
+        }
 
-.seekbar { height: 6px; background: rgba(255, 255, 255, 0.2); border-radius: 6px; cursor: pointer; margin-bottom: 12px; }
-#progress { height: 100%; width: 0%; background: #fff; border-radius: 6px; position: relative; }
+        .search-results {
+            width: 100%;
+            max-width: var(--card-width);
+            max-height: 320px;
+            background: rgba(20, 20, 20, 0.8);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            border: 1px solid var(--glass-border);
+            overflow-y: auto;
+            opacity: 0;
+            visibility: hidden;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            margin-top: 8px;
+            transform: translateY(-10px);
+            transition: var(--transition);
+            z-index: 99;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
 
-.lyrics-info { flex: 1; display: none; }
-.lyrics-content { height: var(--card-height); overflow-y: auto; text-align: center; font-size: 14px; }
-.lyric-line.active { color: #fff; font-weight: 600; transform: scale(1.05); }
+        .search-results.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
 
-.bottom-controls { display: flex; gap: 16px; margin-top: 24px; }
-.bottom-btn { width: 140px; height: 48px; background: var(--glass-bg); border-radius: 4px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .result-item {
+            display: flex;
+            align-items: center;
+            padding: 16px 20px;
+            cursor: pointer;
+            transition: var(--transition);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
 
-#ytPlayer { position: absolute; top: -9999px; left: -9999px; }
+        .result-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(4px);
+        }
 
-.notification {
-    position: fixed; top: 20px; right: 20px; background: rgba(0, 0, 0, 0.9);
-    padding: 12px 20px; border-radius: 8px; transform: translateX(100%); transition: transform 0.3s;
-}
-.notification.show { transform: translateX(0); }
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-img {
+            width: 64px;
+            height: 64px;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-right: 16px;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .result-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .result-item:hover .result-img img {
+            transform: scale(1.05);
+        }
+
+        .result-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .result-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: 15px;
+        }
+
+        .result-artist {
+            font-size: 13px;
+            color: var(--secondary-text);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--accent-glow);
+            font-size: 14px;
+        }
+
+        .loading::before {
+            content: "";
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--accent-glow);
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .player {
+            width: 100%;
+            max-width: var(--card-width);
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            padding: 32px;
+            background: var(--glass-bg);
+            border-radius: 6px;
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            transition: var(--transition);
+        }
+
+        .player:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3);
+        }
+
+        .album-art {
+            flex: 0 0 var(--card-height);
+            height: var(--card-height);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+            transition: var(--transition);
+        }
+
+        .album-art:hover {
+            transform: scale(1.02);
+            border-color: var(--accent-glow);
+        }
+
+        .album-art img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-width: 0;
+        }
+
+        .track-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .artist {
+            font-size: 18px;
+            color: var(--secondary-text);
+            margin-bottom: 32px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-bottom: 24px;
+            color: #e0e0e0;
+        }
+
+        .control-btn {
+            font-size: 24px;
+            cursor: pointer;
+            transition: var(--transition);
+            padding: 8px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            background: (0,10,154);
+        }
+
+        .control-btn:hover {
+            background: (0,10,154);
+            transform: scale(1.1);
+        }
+
+        .control-btn:active {
+            transform: scale(0.95);
+        }
+
+        .control-btn.primary {
+            background: (0,10,154)
+            font-size: 28px;
+        }
+
+        .control-btn.primary:hover {
+            background: var(--accent-glow);
+        }
+
+        .control-btn.active {
+            color: var(--accent-glow);
+            text-shadow: 0 0 8px var(--accent-glow);
+        }
+
+        .seekbar {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            position: relative;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-bottom: 12px;
+        }
+
+        .seekbar:hover {
+            height: 8px;
+        }
+
+        .seekbar.active {
+            height: 10px;
+        }
+
+        #progress {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #ffffff, #e5e5e5);
+            border-radius: 6px;
+            transition: width 0.1s ease;
+            position: relative;
+        }
+
+        #progress::after {
+            content: "";
+            position: absolute;
+            right: -6px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 12px;
+            height: 12px;
+            background: #ffffff;
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .seekbar:hover #progress::after,
+        .seekbar.active #progress::after {
+            opacity: 1;
+        }
+
+        .timecodes {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--secondary-text);
+            font-weight: 500;
+        }
+
+
+        .lyrics-info {
+            flex: 1;
+            display: none;
+            flex-direction: column;
+            justify-content: flex-start;
+            min-width: 0;
+        }
+
+        .lyrics-content {
+            height: var(--card-height);
+            overflow-y: auto;
+            padding-right: 12px;
+            font-size: 14px;
+            line-height: 1.8;
+            text-align: center;
+        }
+
+        .lyrics-content::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .lyrics-content::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 2px;
+        }
+
+        .lyrics-content::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 2px;
+        }
+
+        .lyric-line {
+            transition: var(--transition);
+            color: #999;
+            opacity: 0.4;
+            padding: 4px 0;
+            margin: 2px 0;
+            filter: blur(1px);
+            line-height: 1.6;
+            font-size: 13px;
+        }
+
+        .lyric-line.active {
+            color: #fff;
+            font-weight: 600;
+            opacity: 1;
+            font-size: 16px;
+            filter: blur(0px);
+            transform: scale(1.05);
+        }
+
+        .lyric-line.next {
+            color: #ccc;
+            opacity: 0.7;
+            filter: blur(0.3px);
+        }
+
+        .lyric-line.prev {
+            color: #bbb;
+            opacity: 0.55;
+            filter: blur(0.6px);
+        }
+
+        
+        .bottom-controls {
+            display: flex;
+            gap: 16px;
+            margin-top: 24px;
+            justify-content: center;
+        }
+
+        .bottom-btn {
+            width: 140px;
+            height: 48px;
+            background: var(--glass-bg);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            transition: var(--transition);
+            font-size: 16px;
+            gap: 8px;
+        }
+
+        .bottom-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .bottom-btn:active {
+            transform: translateY(0);
+        }
+
+        #ytPlayer {
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+            width: 1px;
+            height: 1px;
+            opacity: 0;
+        }
+
+        @media (max-width: 768px) {
+            :root {
+                --card-width: 90vw;
+                --card-height: 180px;
+            }
+
+            body {
+                padding: 16px;
+            }
+
+            .player {
+                flex-direction: column;
+                gap: 24px;
+                padding: 24px;
+                text-align: center;
+            }
+
+            .album-art {
+                flex: none;
+                width: 200px;
+                height: 200px;
+            }
+
+            .track-title {
+                font-size: 24px;
+            }
+
+            .artist {
+                font-size: 16px;
+                margin-bottom: 24px;
+            }
+
+            .controls {
+                gap: 20px;
+            }
+
+            .bottom-controls {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .bottom-btn {
+                width: 200px;
+            }
+
+            .lyrics-content {
+                height: 300px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .track-title {
+                font-size: 20px;
+            }
+
+            .artist {
+                font-size: 14px;
+            }
+
+            .control-btn {
+                font-size: 20px;
+                width: 40px;
+                height: 40px;
+            }
+
+            .control-btn.primary {
+                font-size: 24px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        .control-btn:focus,
+        .bottom-btn:focus,
+        .search-input:focus {
+            outline: 2px solid #4ade80;
+            outline-offset: 2px;
+        }
+
+        .result-item:focus {
+            outline: 2px solid #4ade80;
+            outline-offset: -2px;
+        }
+
+        .error {
+            color: #ef4444;
+            text-align: center;
+            padding: 20px;
+            font-size: 14px;
+        }
+
+        .success {
+            color: #4ade80;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
